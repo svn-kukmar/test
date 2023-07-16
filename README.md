@@ -36,4 +36,4 @@ Data can be added via two methods:
 You need to have Python installed on your machine.
 
 1. **Clone the repository**
-
+1.https://github.com/vishodhan123/Employee_management1.git
