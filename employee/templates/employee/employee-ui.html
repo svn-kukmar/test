@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">Add New Employee</h1>
+            <form method="POST" action="/api/employee/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <select name="department" id="department" class="form-control" required>
+                        {% for department in departments %}
+                            <option value="{{ department.id }}">{{ department.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <input type="text" id="role" name="role" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="manager">Manager:</label>
+                    <input type="text" id="manager" name="manager" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="identification_document">Identification Document:</label>
+                    <input type="file" id="identification_document" name="identification_document" class="form-control" required>
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

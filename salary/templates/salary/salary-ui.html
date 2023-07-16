@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salary Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha3/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle form submission
+            $('#salary-form').submit(function(e) {
+                e.preventDefault();
+
+                var employee_id = $('#employee_id').val();
+                var amount = $('#amount').val();
+                var date = $('#date').val();
+
+                $.ajax({
+                    url: '/api/salary/',
+                    type: 'POST',
+                    data: { employee_id: employee_id, amount: amount, date: date },
+                    success: function() {
+                        $('#employee_id').val('');
+                        $('#amount').val('');
+                        $('#date').val('');
+                        fetchSalaries();
+                    }
+                });
+            });
+
+            // Fetch salaries
+            function fetchSalaries() {
+                $.ajax({
+                    url: '/api/salary/',
+                    type: 'GET',
+                    success: function(data) {
+                        var salariesList = $('#salaries-list');
+                        salariesList.empty();
+
+                        data.forEach(function(salary) {
+                            var salaryItem = $('<li>').addClass('list-group-item').text(`Employee ID: ${salary.employee_id}, Amount: ${salary.amount}, Date: ${salary.date}`);
+                            salariesList.append(salaryItem);
+                        });
+                    }
+                });
+            }
+
+            fetchSalaries();
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2 class="card-title mb-0">Add Salary:</h2>
+            </div>
+            <div class="card-body">
+                <form id="salary-form">
+                    <div class="mb-3">
+                        <label for="employee_id" class="form-label">Employee ID:</label>
+                        <input type="number" class="form-control" id="employee_id" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Amount:</label>
+                        <input type="number" class="form-control" id="amount" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date:</label>
+                        <input type="date" class="form-control" id="date" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Salary</button>
+                </form>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2 class="card-title mb-0">Salaries:</h2>
+            </div>
+            <div class="card-body">
+                <ul id="salaries-list" class="list-group">
+                    <!-- Salary items will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

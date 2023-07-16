@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center">Department Management</h1>
+            <form id="department-form">
+                <div class="form-group">
+                    <label for="name">Department Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter Department Name" required>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Add Department</button>
+            </form>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <ul id="departments-list" class="list-group">
+                <!-- Department items will be dynamically added here using JavaScript -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Handle form submission
+            $('#department-form').submit(function(e) {
+                e.preventDefault();
+
+                var name = $('#name').val();
+
+                $.ajax({
+                    url: '/api/department/',
+                    type: 'POST',
+                    data: { name: name },
+                    success: function() {
+                        $('#name').val('');
+                        fetchDepartments();
+                    }
+                });
+            });
+
+            // Fetch departments
+            function fetchDepartments() {
+                $.ajax({
+                    url: '/api/department/',
+                    type: 'GET',
+                    success: function(response) {
+                        var departmentsList = $('#departments-list');
+                        departmentsList.empty();
+
+                        response.data.forEach(function(department) {
+                            var departmentItem = $('<li>').addClass('list-group-item').text(department.name);
+                            departmentsList.append(departmentItem);
+                        });
+                    }
+                });
+            }
+
+            // Fetch departments immediately after page loads
+            fetchDepartments();
+        });
+    </script>
+{% endblock content %}

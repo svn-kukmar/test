@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="#">Employee Management System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'department:department-ui' %}">Departments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'employee:employee-ui' %}">Employees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'salary:salary-ui' %}">Salary</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'task:task-ui' %}">Tasks</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero bg-primary text-white text-center py-5">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Welcome to the Employee Management System</h1>
+                <p class="lead">Efficiently manage departments, employees, salaries, and tasks.</p>
+                <a href="{% url 'department:department-ui' %}" class="btn btn-light">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .navbar-nav .nav-link {
+            transition: color 0.2s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ddd;
+        }
+    </style>
+
+    <script>
+        function comingSoon() {
+            alert('This feature is coming soon!');
+        }
+    </script>
+
+{% endblock %}

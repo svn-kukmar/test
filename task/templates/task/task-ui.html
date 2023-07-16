@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-12 margin-tb">
+                <div class="pull-left mb-2">
+                    <h2>Add New Task</h2>
+                </div>
+            </div>
+        </div>
+        <form id="task-form">
+            <div class="form-group">
+                <label for="name">Task Name:</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Task Description:</label>
+                <input type="text" class="form-control" id="description" required>
+            </div>
+            <div class="form-group">
+                <label for="start_date">Start Date:</label>
+                <input type="date" class="form-control" id="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="end_date">End Date:</label>
+                <input type="date" class="form-control" id="end_date" required>
+            </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <input type="text" class="form-control" id="status" required>
+            </div>
+            <div class="form-group">
+                <label for="employee_id">Employee ID:</label>
+                <input type="text" class="form-control" id="employee_id" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+        <hr/>
+        <h2>Tasks:</h2>
+        <table class="table table-bordered" id="tasks-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Employee ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Task items will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // Handle form submission
+            $('#task-form').submit(function(e) {
+                e.preventDefault();
+
+                var name = $('#name').val();
+                var description = $('#description').val();
+                var start_date = $('#start_date').val();
+                var end_date = $('#end_date').val();
+                var status = $('#status').val();
+                var employee_id = $('#employee_id').val();
+
+                $.ajax({
+                    url: '/api/task/',
+                    type: 'POST',
+                    data: {
+                        name: name,
+                        description: description,
+                        start_date: start_date,
+                        end_date: end_date,
+                        status: status,
+                        employee_id: employee_id
+                    },
+                    success: function() {
+                        $('#name').val('');
+                        $('#description').val('');
+                        $('#start_date').val('');
+                        $('#end_date').val('');
+                        $('#status').val('');
+                        $('#employee_id').val('');
+                        fetchTasks();
+                    }
+                });
+            });
+
+            // Fetch tasks
+            function fetchTasks() {
+                $.ajax({
+                    url: '/api/task/',
+                    type: 'GET',
+                    success: function(data) {
+                        var tasksTable = $('#tasks-table tbody');
+                        tasksTable.empty();
+
+                        data.forEach(function(task) {
+                            var taskRow = $('<tr>')
+                                .append($('<td>').text(task.id))
+                                .append($('<td>').text(task.name))
+                                .append($('<td>').text(task.description))
+                                .append($('<td>').text(task.start_date))
+                                .append($('<td>').text(task.end_date))
+                                .append($('<td>').text(task.status))
+                                .append($('<td>').text(task.employee_id));
+
+                            tasksTable.append(taskRow);
+                        });
+                    }
+                });
+            }
+
+            fetchTasks();
+        });
+    </script>
+</body>
+</html>
